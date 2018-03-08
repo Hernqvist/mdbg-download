@@ -11,10 +11,11 @@ def get_url(sign):
   return url
 
 class Word():
-  defs = []
-  pinyin = ""
-  pinyin_code = ""
-  sign = ""
+  def __init__(self):
+    self.defs = []
+    self.pinyin = ""
+    self.pinyin_code = ""
+    self.sign = ""
 
   def save_all(self):
     print("Saving info for", self.sign)
@@ -60,11 +61,13 @@ class Word():
 
 
 class MyHTMLParser(HTMLParser):
-  word_depth = 0
-  depth = 1
-  words = []
-  in_defs, in_pinyin, pinyin_next = False, False, False
-  defs = []
+  def __init__(self):
+    HTMLParser.__init__(self)
+    self.word_depth = 0
+    self.depth = 1
+    self.words = []
+    self.in_defs, self.in_pinyin, self.pinyin_next = False, False, False
+    self.defs = []
 
   def handle_starttag(self, tag, attrs):
     self.depth += 1
@@ -136,7 +139,9 @@ def run(term = None, selected = 0):
       print(str(i + 1) + ")", word.sign, word.pinyin, "-", "/".join(word.defs))
     selected = int(input("Enter number: ")) - 1
 
-  words[selected].save_all()
+  word = words[selected]
+  word.save_all()
+  return word
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()

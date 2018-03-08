@@ -2,6 +2,8 @@ from urllib.request import urlopen, urlretrieve
 from html.parser import HTMLParser
 import urllib.parse
 import re
+import argparse
+
 
 def get_url(sign):
   url = "https://www.mdbg.net/chinese/dictionary?page=worddict&wdqb=" \
@@ -15,6 +17,7 @@ class Word():
   sign = ""
 
   def save_all(self):
+    print("Saving info for", self.sign)
     try:
       self.save_info()
       print("Saved translation.")
@@ -117,15 +120,16 @@ class MyHTMLParser(HTMLParser):
       self.in_pinyin = False
 
 
-def run():
-  sign = input("Enter search term (pinyin/hanzi): ")
+def run(term = None, selected = 0):
+  selected -= 1
+  if term == None:
+    term = input("Enter search term (pinyin/hanzi): ")
 
-  html = urlopen(get_url(sign)).read().decode('utf-8')
+  html = urlopen(get_url(term)).read().decode('utf-8')
   parser = MyHTMLParser()
   parser.feed(html)
   words = parser.words
 
-  selected = -1
   while not selected in range(len(words)):
     print("Which definition did you mean?")
     for i, word in enumerate(words):
@@ -135,5 +139,10 @@ def run():
   words[selected].save_all()
 
 if __name__ == "__main__":
-  run()
+  parser = argparse.ArgumentParser()
+  parser.add_argument("--term", default=None, type=str, help="select search term")
+  parser.add_argument("--select", default=0, type=int, help="select result number")
+  args = parser.parse_args()
+
+  run(args.term, args.select)
 

@@ -131,7 +131,7 @@ def run(term = None, selected = 0):
   html = urlopen(get_url(term)).read().decode('utf-8')
   parser = MyHTMLParser()
   parser.feed(html)
-  words = parser.words
+  words = parser.words[:30]
 
   while not selected in range(len(words)):
     print("Which definition did you mean?")

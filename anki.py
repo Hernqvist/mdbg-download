@@ -16,7 +16,8 @@ def update_list(word):
 
 def add_word():
   word = mdbg.run()
-  update_list(word.sign)
+  if word:
+    update_list(word.sign)
 
 def build(name):
   deck = genanki.Deck(123454321, name)

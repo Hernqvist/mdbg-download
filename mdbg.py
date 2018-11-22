@@ -133,6 +133,11 @@ def run(term = None, selected = 0):
   parser.feed(html)
   words = parser.words[:30]
 
+  if len(words) == 0:
+    print('No words found :(')
+    return
+    
+
   while not selected in range(len(words)):
     print("Which definition did you mean?")
     for i, word in enumerate(words):

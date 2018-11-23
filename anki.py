@@ -3,8 +3,12 @@ import mdbg, genanki, argparse, random
 list_file = "list.txt"
 
 def update_list(word):
-  with open(list_file, 'r') as file:
-    lst = file.read().split()
+  try:
+    with open(list_file, 'r') as file:
+      lst = file.read().split()
+  except:
+    lst = []
+    
   if not word in lst:
     lst += [word]
   with open(list_file, 'w') as file:
@@ -12,7 +16,8 @@ def update_list(word):
 
 def add_word():
   word = mdbg.run()
-  update_list(word.sign)
+  if word:
+    update_list(word.sign)
 
 def build(name):
   deck = genanki.Deck(123454321, name)
